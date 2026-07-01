@@ -13,9 +13,7 @@ pip-delete-this-directory.txt
 .coverage
 *.log
 
-# Arquivos gerados
-estrutura_*.xlsx
-*.xlsx
+# A
 
 # Playwright
 playwright-report/
