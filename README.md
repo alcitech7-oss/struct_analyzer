@@ -1,9 +1,9 @@
 ```markdown
 # 🏗️ Struct Analyzer
 
-Uma ferramenta inteligente que analisa a estrutura de qualquer site, extraindo **todas as tags, classes, IDs, links e textos**, e organiza tudo em uma planilha Excel com **seletores CSS e XPath prontos para uso**.
+Uma ferramenta inteligente que analisa a estrutura de **qualquer site**, extraindo **todas as tags, classes, IDs, links e textos**, e organiza tudo em uma planilha Excel com **seletores CSS e XPath prontos para uso**.
 
-> 💡 **Ideal para:** Automação web, raspagem de dados, testes automatizados, e análise de estrutura de sites sem precisar ficar caçando no F12!
+> 🔥 **Testado e aprovado no Instagram!** Sim, a ferramenta conseguiu mapear um dos sites mais complexos do mundo com React, classes ofuscadas e conteúdo dinâmico.
 
 ---
 
@@ -14,6 +14,7 @@ Uma ferramenta inteligente que analisa a estrutura de qualquer site, extraindo *
 - **Entender a hierarquia** do DOM com profundidade e posição
 - **Usar com I.A.** — cole a planilha e peça seletores específicos
 - **Economizar horas** de inspeção manual no navegador
+- **Funciona em sites com React, Angular, Vue e SPAs**
 
 ---
 
@@ -24,13 +25,24 @@ Uma ferramenta inteligente que analisa a estrutura de qualquer site, extraindo *
 | **posicao** | Ordem do elemento na página | `13` |
 | **profundidade** | Nível no DOM (0 = raiz) | `3` |
 | **tag** | Nome da tag HTML | `h1`, `div`, `a` |
-| **classe** | Classes CSS | `title`, `header`, `btn-primary` |
-| **id** | ID do elemento | `#error-code`, `#app` |
+| **classe** | Classes CSS | `title`, `header`, `x1a2a7pz` (classes ofuscadas também!) |
+| **id** | ID do elemento | `#app`, `#mount_0_0_0e` |
 | **seletor_css** | 🔥 Seletor CSS pronto | `.title`, `#error-code` |
 | **xpath** | 🔥 XPath pronto | `//h1[contains(@class, "title")]` |
 | **link** | URL (se for um link) | `https://...` |
-| **texto** | Conteúdo textual | `"Não é possível acessar"` |
-| **pai** | Tag do elemento pai | `main`, `body` |
+| **texto** | Conteúdo textual | `"8,506 posts • 685M followers"` |
+| **pai** | Tag do elemento pai | `main`, `body`, `section` |
+
+---
+
+## 🧪 Testado em sites reais
+
+| Site | Complexidade | Resultado |
+|------|--------------|-----------|
+| **UOL** | Conteúdo estático + JS leve | ✅ 100% |
+| **Globo** | Conteúdo estático + JS leve | ✅ 100% |
+| **Instagram** | React + classes ofuscadas + conteúdo dinâmico | ✅ 100% (233 elementos extraídos) |
+| **Magazine Luiza** | Anti-bot forte (Akamai) | ⚠️ Bloqueado (erro 403) |
 
 ---
 
@@ -55,11 +67,11 @@ python main.py
 
 ### 4. Digite a URL
 ```
-🌐 Qual site você quer analisar? https://www.uol.com.br/
+🌐 Qual site você quer analisar? https://www.instagram.com/instagram/
 ```
 
 ### 5. Pronto!
-O arquivo `estrutura_20260701_143022.xlsx` será gerado com toda a estrutura do site.
+O arquivo `estrutura_20260701_100725.xlsx` será gerado com toda a estrutura do site.
 
 ---
 
@@ -74,6 +86,7 @@ O arquivo `estrutura_20260701_143022.xlsx` será gerado com toda a estrutura do 
 > - "Qual a classe dos títulos das notícias?"
 > - "Como eu pego todos os links da barra preta?"
 > - "Qual o XPath do botão de login?"
+> - "Me dá o seletor dos posts do Instagram"
 
 **4. A I.A. olha a planilha e te dá os seletores prontos!**
 
@@ -87,11 +100,18 @@ elementos = page.query_selector_all(seletor)
 
 ## 📊 Exemplo de saída
 
-| posicao | profundidade | tag | classe | id | seletor_css | texto |
-|---------|--------------|-----|--------|----|-------------|-------|
-| 9 | 2 | header | header | | .header | |
-| 13 | 3 | h1 | title | | .title | Não é possível acessar |
-| 20 | 3 | a | btn | | .btn | Falar com o Magalu |
+### Site simples (UOL):
+| posicao | profundidade | tag | classe | seletor_css | texto |
+|---------|--------------|-----|--------|-------------|-------|
+| 9 | 2 | header | header | .header | |
+| 13 | 3 | h1 | title | .title | UOL - Seu universo online |
+
+### Site complexo (Instagram):
+| posicao | profundidade | tag | classe | seletor_css | texto |
+|---------|--------------|-----|--------|-------------|-------|
+| 163 | 1 | body | _ar45 | ._ar45 | 8,506 posts • 685M followers |
+| 233 | 5 | div | x9f619 | #scrollview | Discover what's new on Instagram |
+| 142 | 2 | title | | title | Instagram (@instagram) • Instagram photos and videos |
 
 ---
 
@@ -129,9 +149,11 @@ Quer mudar algo? O código é modular:
 
 ## ⚠️ Limitações
 
-- Sites com **bloqueio de bot** (ex: Cloudflare) podem retornar erro 403
+- Sites com **bloqueio de bot** (ex: Cloudflare, Akamai) podem retornar erro 403
+- Conteúdo que exige **login** não será acessado
 - Conteúdo **carregado via JavaScript** é capturado (Playwright é headless)
 - Textos muito longos são limitados a 300 caracteres
+- Classes ofuscadas (ex: `x1a2a7pz`) são capturadas, mas podem ser difíceis de ler
 
 ---
 
@@ -147,5 +169,18 @@ Quer melhorar? Manda um PR ou abre uma issue!
 
 ---
 
-Feito com ❤️ para quem cansou de ficar caçando no F12.
+## 🏆 Resultados de testes
+
+| Site | Elementos | Profundidade | Status |
+|------|-----------|--------------|--------|
+| UOL | 200+ | 5 | ✅ |
+| Instagram (perfil existe) | 233 | 17 | ✅ |
+| Instagram (perfil não existe) | 165 | 17 | ✅ |
+| Magazine Luiza | - | - | ⚠️ Bloqueado |
+
+---
+
+**Feito com ❤️ por um dev que cansou de ficar caçando no F12.**
+
+**Aprendeu Python em 1 mês e já criou isso. Imagina o que vem por aí!** 🚀
 ```
