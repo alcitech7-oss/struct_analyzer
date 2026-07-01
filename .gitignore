@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+*.log
+
+# Arquivos gerados
+estrutura_*.xlsx
+*.xlsx
+
+# Playwright
+playwright-report/
+test-results/
+*.mp4
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Credenciais
+.env
+*.pem
+*.key
